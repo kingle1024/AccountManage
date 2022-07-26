@@ -35,10 +35,20 @@ public class AccountService {
 
         validateCreateAccount(accountUser);
 
-        long accountRandomNumber = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
-        String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
-                .map(account -> (Long.parseLong(account.getAccountNumber())) + 1 +"")
-                .orElse(String.valueOf(accountRandomNumber));
+        String strAccountRandomNumber;
+
+        String newAccountNumber = "";
+        int randomCnt = 0;
+        while(true){
+            if(randomCnt > 1) break;
+            strAccountRandomNumber = String.valueOf((long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L);
+            if(accountRepository.findByAccountNumber(strAccountRandomNumber).isEmpty()){
+                newAccountNumber = strAccountRandomNumber;
+                break;
+            }
+
+            randomCnt++;
+        }
 
         return AccountDto.fromEntity(
                 accountRepository.save(
@@ -55,6 +65,8 @@ public class AccountService {
     private void validateCreateAccount(AccountUser accountUser){
         if(accountRepository.countByAccountUser(accountUser) == 10){
             throw new AccountException(MAX_ACCOUNT_PER_USER_10);
+        }else if(accountRepository.findById(accountUser.getId()) == null){
+            throw new AccountException(USER_NOT_FOUND);
         }
     }
 
