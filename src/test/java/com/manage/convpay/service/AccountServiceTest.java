@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -80,13 +81,13 @@ class AccountServiceTest {
         user.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(user));
-        given(accountRepository.findFirstByOrderByIdDesc())
-                .willReturn(Optional.of(Account.builder()
-                                .accountNumber("100000012").build()));
+//        given(accountRepository.findFirstByOrderByIdDesc())
+//                .willReturn(Optional.of(Account.builder()
+//                                .accountNumber("100000012").build()));
         given(accountRepository.save(any()))
                 .willReturn(Account.builder()
                         .accountUser(user)
-                        .accountNumber("100000015").build());
+                        .accountNumber("100000013").build());
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 
         //when
@@ -95,8 +96,9 @@ class AccountServiceTest {
         //then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(12L, accountDto.getUserId());
-//        assertEquals("100000013", accountDto.getAccountNumber());
-        assertEquals("100000013", captor.getValue().getAccountNumber());
+        assertEquals("100000013", accountDto.getAccountNumber());
+        assertEquals(10, captor.getValue().getAccountNumber().length());
+        assertThat(Long.parseLong(captor.getValue().getAccountNumber()) >= 0 &&  Long.parseLong(captor.getValue().getAccountNumber()) < 10_000_000_000L);
     }
 
     @Test

@@ -65,7 +65,8 @@ public class AccountService {
     private void validateCreateAccount(AccountUser accountUser){
         if(accountRepository.countByAccountUser(accountUser) == 10){
             throw new AccountException(MAX_ACCOUNT_PER_USER_10);
-        }else if(accountRepository.findById(accountUser.getId()) == null){
+        }
+        if(accountRepository.findById(accountUser.getId()) == null){
             throw new AccountException(USER_NOT_FOUND);
         }
     }
