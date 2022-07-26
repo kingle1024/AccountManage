@@ -14,6 +14,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND("계좌가 존재하지 않습니다."),
     ACCOUNT_TRANSACTION_LOCK("해당 계좌는 사용 사용중입니다"),
     AMOUNT_EXCEED_BALANCE("거래 금액이 계좌 잔액보다 큽니다."),
+    AMOUNT_BALANCE_IS_BIG_OR_SMALL("거래금액이 너무 작거나 큽니다."),
     TOO_OLD_ORDER_TO_CANCEL("1년이 지난 거래는 취소가 불가능합니다."),
     TRANSACTION_NOT_FOUND("해당 거래가 없습니다."),
     TRANSACTION_ACCOUNT_UN_MATCH("이 거래는 해당 계좌에서 발생한 거래가 아닙니다."),

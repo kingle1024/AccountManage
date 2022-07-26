@@ -204,6 +204,56 @@ class TransactionServiceTest {
         verify(transactionRepository, times(0)).save(any());
     }
     @Test
+    @DisplayName("거래 금액이 너무 큰 경우")
+    void amountBalanceIsBig(){
+        //given
+        AccountUser user = AccountUser.builder()
+                .name("pobi").build();
+        user.setId(12L);
+        Account account = Account.builder()
+                .accountUser(user)
+                .accountStatus(IN_USE)
+                .balance(10_000_000_000L)
+                .accountNumber("1000000000").build();
+        given(accountUserRepository.findById(anyLong())) // 없으면 유저 없다고 에러
+                .willReturn(Optional.of(user));
+        given(accountRepository.findByAccountNumber(anyString())) // 없으면 계좌 못찾는다고 에러
+                .willReturn(Optional.of(account));
+
+        //when
+        AccountException exception = assertThrows(AccountException.class,
+                () -> transactionService.useBalance(1L, "1000000000", 1_000_000_000L));
+
+        //then
+        assertEquals(ErrorCode.AMOUNT_BALANCE_IS_BIG_OR_SMALL, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("거래 금액이 너무 작은 경우")
+    void amountBalanceIsSmall(){
+        //given
+        AccountUser user = AccountUser.builder()
+                .name("pobi").build();
+        user.setId(12L);
+        Account account = Account.builder()
+                .accountUser(user)
+                .accountStatus(IN_USE)
+                .balance(10_000_000_000L)
+                .accountNumber("1000000000").build();
+        given(accountUserRepository.findById(anyLong())) // 없으면 유저 없다고 에러
+                .willReturn(Optional.of(user));
+        given(accountRepository.findByAccountNumber(anyString())) // 없으면 계좌 못찾는다고 에러
+                .willReturn(Optional.of(account));
+
+        //when
+        AccountException exception = assertThrows(AccountException.class,
+                () -> transactionService.useBalance(1L, "1000000000", -10L));
+
+        //then
+        assertEquals(ErrorCode.AMOUNT_BALANCE_IS_BIG_OR_SMALL, exception.getErrorCode());
+    }
+
+    @Test
     @DisplayName("실패 트랜잭션 저장 성공")
     void saveFailedUseTransaction(){
         //given

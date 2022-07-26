@@ -52,10 +52,6 @@ public class TransactionService {
     }
 
     private void validateUseBalance(AccountUser user, Account account, Long amount) {
-        /**
-         * 사용자가 없는 경우,
-         * 사용자
-         */
         if(!Objects.equals(user.getId(), account.getAccountUser().getId())){
             throw new AccountException(ErrorCode.USER_ACCOUNT_UN_MATCH);
         }
@@ -64,6 +60,9 @@ public class TransactionService {
         }
         if(account.getBalance() < amount){
             throw new AccountException(ErrorCode.AMOUNT_EXCEED_BALANCE);
+        }
+        if(amount >= 1_000_000_000 || amount < 1){
+            throw new AccountException(ErrorCode.AMOUNT_BALANCE_IS_BIG_OR_SMALL);
         }
     }
 
