@@ -11,12 +11,12 @@
 계좌(Account) 관련 API 
 - 계좌 생성(@Post /account)
 - 계좌 해지(@Delete /account)
-- 계좌 확인(@get /account)
+- 계좌 확인(@Get /account)
 
 거래(Transaction) 관련 API
 - 잔액 사용(@Post /transaction/use)
 - 잔액 사용 취소(@Post /transaction/cancel)
-- 거래 확인(@@Get /transaction/{transactionId})
+- 거래 확인(@Get /transaction/{transactionId})
 
 # 기술 스택
 - SpringBoot : 2.6.4
