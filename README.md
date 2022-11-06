@@ -19,8 +19,10 @@
 - 거래 확인(@Get /transaction/{transactionId})
 
 [주요 기술]
-- DI 구축으로 결제 수단 및 결제 대상에 대해 의존성을 낮춤
+- DI 구축으로 결제 수단 및 결제 대상에 대해 의존성 최소화
+- @Transactional 사용하면서 작업 단위를 최소화
 - enum 활용하여 상태 코드 관리
+- Redis 적용
 - TDD 적용 (given, when, then)
 
 # 기술 스택
