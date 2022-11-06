@@ -18,12 +18,14 @@
 - 잔액 사용 취소(@Post /transaction/cancel)
 - 거래 확인(@Get /transaction/{transactionId})
 
-[주요 기술]
+# 주요 기술
 - DI 구축으로 결제 수단 및 결제 대상에 대해 의존성 최소화
 - @Transactional 사용하면서 작업 단위를 최소화
+- @ExceptionHandler 활용하여 에러 예외 처리
 - enum 활용하여 상태 코드 관리
 - Redis 적용
 - TDD 적용 (given, when, then)
+- AOP를 사용하여 동시성 제어
 
 # 기술 스택
 - SpringBoot : 2.6.4
